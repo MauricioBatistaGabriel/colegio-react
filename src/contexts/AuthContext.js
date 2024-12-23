@@ -1,6 +1,7 @@
 // src/contexts/AuthContext.js
 import React, { createContext, useState } from 'react';
 import axios from 'axios';
+import { message } from 'antd';
 
 const AuthContext = createContext();
 
@@ -24,8 +25,19 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const signup = async (email, senha) => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/usuario', { email, senha });
+      console.log(response.data);
+      message.success('Cadastro realizado com sucesso!');
+    } catch (error) {
+      console.error('Signup failed', error);
+      message.error('Erro ao realizar cadastro. Tente novamente.');
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ authState, login }}>
+    <AuthContext.Provider value={{ authState, login, signup }}>
       {children}
     </AuthContext.Provider>
   );

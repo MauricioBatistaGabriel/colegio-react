@@ -1,30 +1,25 @@
-// src/pages/Login.js
-import React, { useContext, useState, useEffect } from 'react';
+// src/pages/Signup.js
+import React, { useContext, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Importando Link
 import { Form, Input, Button, Card } from 'antd';
 import { AuthContext } from '../contexts/AuthContext';
 
-const Login = () => {
+const Signup = () => {
   const [form] = Form.useForm();
-  const { authState, login } = useContext(AuthContext);
+  const { signup } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     setLoading(true);
-    await login(values.email, values.senha);
+    await signup(values.email, values.senha);
     setLoading(false);
+    navigate('/login'); // Redireciona para a página de login após o cadastro bem-sucedido
   };
 
-  useEffect(() => {
-    if (authState.isAuthenticated) {
-      navigate('/aluno'); // Redireciona para a página inicial após o login bem-sucedido
-    }
-  }, [authState.isAuthenticated, navigate]);
-
   return (
-    <Card title="Login" style={{ width: 300, margin: 'auto', marginTop: '100px' }}>
-      <Form form={form} name="login" onFinish={onFinish}>
+    <Card title="Cadastro" style={{ width: 300, margin: 'auto', marginTop: '100px' }}>
+      <Form form={form} name="signup" onFinish={onFinish}>
         <Form.Item
           name="email"
           rules={[{ required: true, message: 'Por favor, insira seu email!' }]}
@@ -39,12 +34,12 @@ const Login = () => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Login
+            Cadastrar
           </Button>
         </Form.Item>
         <Form.Item>
-          <Link to="/signup">
-            <Button type="default">Cadastrar</Button>
+          <Link to="/">
+            <Button type="default">Voltar para Login</Button>
           </Link>
         </Form.Item>
       </Form>
@@ -52,4 +47,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

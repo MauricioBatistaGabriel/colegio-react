@@ -1,5 +1,6 @@
 // src/services/professorService.js
 import axios from 'axios';
+import { message } from 'antd'; // Importando o message
 
 const API_URL = 'http://localhost:8080/api/professor';
 
@@ -13,7 +14,7 @@ export const criarProfessor = async (professor) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
@@ -27,7 +28,7 @@ export const editarProfessor = async (id, professor) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
@@ -35,12 +36,13 @@ export const excluirProfessor = async (id) => {
   try {
     const token = localStorage.getItem('token');
     await axios.delete(`${API_URL}/${id}`, {
-        headers: {
-            Authorization: `Bearer ${token}`, 
-            'Content-Type': 'application/json',          },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
@@ -54,7 +56,7 @@ export const listarProfessores = async () => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
@@ -68,6 +70,22 @@ export const listarMaterias = async () => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
+};
+
+const handleError = (error) => {
+  if (error.response && error.response.data && error.response.data.message) {
+    return { error: error.response.data.message }; // Retorna a mensagem de erro do servidor
+  } else {
+    return { error: 'Erro na aplicação' }; // Retorna erro genérico da aplicação
+  }
+};
+
+export default {
+  criarProfessor,
+  editarProfessor,
+  excluirProfessor,
+  listarProfessores,
+  listarMaterias,
 };
