@@ -13,11 +13,11 @@ const ListarMaterias = () => {
   useEffect(() => {
     const fetchMaterias = async () => {
       setLoading(true);
-      try {
-        const data = await listarMaterias();
-        setMaterias(data);
-      } catch (error) {
-        message.error('Falha ao carregar as matérias.');
+      const result = await listarMaterias();
+      if (result.error) {
+        message.warning(result.error); // Exibe a mensagem de erro do servidor em amarelo
+      } else {
+        setMaterias(result);
       }
       setLoading(false);
     };
@@ -27,9 +27,13 @@ const ListarMaterias = () => {
 
   const handleDelete = async (id) => {
     try {
-      await excluirMateria(id);
-      setMaterias(materias.filter(materia => materia.id !== id));
-      message.success('Matéria excluída com sucesso!');
+      const result = await excluirMateria(id);
+      if (result && result.error) {
+        message.error(result.error); // Exibe mensagem de erro em vermelho
+      } else {
+        setMaterias(materias.filter(materia => materia.id !== id));
+        message.success('Matéria excluída com sucesso!');
+      }
     } catch (error) {
       message.error('Falha ao excluir a matéria.');
     }
@@ -37,33 +41,37 @@ const ListarMaterias = () => {
 
   const handleEdit = (record) => {
     setSelectedMateria(record);
-    form.setFieldsValue({nome: record.nome});
+    form.setFieldsValue({ nome: record.nome });
     setIsModalVisible(true);
-  }
+  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
     setSelectedMateria(null);
     form.resetFields();
-  }
+  };
 
   const handleSave = async () => {
-    try{
-        const values = await form.validateFields();
-        await AtualizarMateria(selectedMateria.id, { nome: values.nome});
+    try {
+      const values = await form.validateFields();
+      const result = await AtualizarMateria(selectedMateria.id, { nome: values.nome });
+      if (result && result.error) {
+        message.error(result.error); // Exibe mensagem de erro em vermelho
+      } else {
         setMaterias(materias.map(materia => (materia.id === selectedMateria.id ? { ...materia, nome: values.nome } : materia)));
-        message.success('Matéria atualizada com sucesso!')
+        message.success('Matéria atualizada com sucesso!');
         handleCancel();
+      }
     } catch (error) {
-        message.error('Falha ao atualizar a matéria');
+      message.error('Falha ao atualizar a matéria');
     }
-  }
+  };
 
   const columns = [
     {
-        title: '#',
-        dataIndex: 'id',
-        Key: 'id',
+      title: '#',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: 'Nome da Matéria',
@@ -91,31 +99,31 @@ const ListarMaterias = () => {
 
   return (
     <>
-    <Table
-      columns={columns}
-      dataSource={materias}
-      loading={loading}
-      rowKey="id"
-      pagination={{ pageSize: 6 }}
-    />
-    <Modal
-    title="Manutenção Matéria"
-    open={isModalVisible}
-    onCancel={handleCancel}
-    onOk={handleSave}
-    okText="Salvar"
-    cancelText="Cancelar"
-    >
+      <Table
+        columns={columns}
+        dataSource={materias}
+        loading={loading}
+        rowKey="id"
+        pagination={{ pageSize: 6 }}
+      />
+      <Modal
+        title="Manutenção Matéria"
+        open={isModalVisible}
+        onCancel={handleCancel}
+        onOk={handleSave}
+        okText="Salvar"
+        cancelText="Cancelar"
+      >
         <Form form={form} layout="vertical">
-            <Form.Item
+          <Form.Item
             name="nome"
             label="Nome da Matéria"
-            rules={[{required: true, message: 'Por favor, insira o nome da matéria! '}]}
-            >
-                <Input placeholder="Nome da Matéria" />
-            </Form.Item>
+            rules={[{ required: true, message: 'Por favor, insira o nome da matéria!' }]}
+          >
+            <Input placeholder="Nome da Matéria" />
+          </Form.Item>
         </Form>
-    </Modal>
+      </Modal>
     </>
   );
 };

@@ -13,7 +13,7 @@ export const criarMateria = async (materia) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
@@ -28,7 +28,7 @@ export const listarMaterias = async () => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
@@ -41,20 +41,35 @@ export const excluirMateria = async (id) => {
       },
     });
   } catch (error) {
-    throw error;
+    return handleError(error); // Retorna o erro para a chamada
   }
 };
 
 export const AtualizarMateria = async (id, materia) => {
-    try{
-        const token = localStorage.getItem('token');
-        const response = await axios.put(`${API_URL}/${id}`, { nome:materia.nome }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-}
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.put(`${API_URL}/${id}`, { nome: materia.nome }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return handleError(error); // Retorna o erro para a chamada
+  }
+};
+
+const handleError = (error) => {
+  if (error.response && error.response.data && error.response.data.message) {
+    return { error: error.response.data.message }; // Retorna a mensagem de erro do servidor
+  } else {
+    return { error: 'Erro na aplicação' }; // Retorna erro genérico da aplicação
+  }
+};
+
+export default {
+  criarMateria,
+  listarMaterias,
+  excluirMateria,
+  AtualizarMateria,
+};

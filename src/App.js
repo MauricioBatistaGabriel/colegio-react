@@ -4,6 +4,7 @@ import { Layout, Menu } from 'antd';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import AlunoHome from './pages/Aluno/Home';
 import CriarAluno from './pages/Aluno/CriarAluno';
 import ListarAlunos from './pages/Aluno/ListarAlunos';
@@ -39,6 +40,7 @@ function App() {
             <div className="site-layout-content">
               <Routes>
                 <Route path="/" element={<Login />} />
+                <Route path="/signup" element={<Signup />} /> {/* Adicionando a rota de cadastro */}
                 <Route path="/aluno" element={<PrivateRoute><AlunoHome /></PrivateRoute>} />
                 <Route path="/aluno/criar" element={<PrivateRoute><CriarAluno /></PrivateRoute>} />
                 <Route path="/aluno/listar" element={<PrivateRoute><ListarAlunos /></PrivateRoute>} />
