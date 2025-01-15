@@ -1,7 +1,7 @@
-// src/contexts/AuthContext.js
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -10,6 +10,18 @@ const AuthProvider = ({ children }) => {
     token: null,
     isAuthenticated: false,
   });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Checar se há um token no localStorage quando o componente for montado
+    const token = localStorage.getItem('token');
+    if (token) {
+      setAuthState({
+        token,
+        isAuthenticated: true,
+      });
+    }
+  }, []);
 
   const login = async (email, senha) => {
     try {
@@ -20,8 +32,10 @@ const AuthProvider = ({ children }) => {
         isAuthenticated: true,
       });
       localStorage.setItem('token', token); // Salva o token no localStorage
+      message.success('Login realizado com sucesso!');
     } catch (error) {
       console.error('Login failed', error);
+      message.error('Falha ao realizar o login.');
     }
   };
 
@@ -36,8 +50,29 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout = async () => {
+    try {
+      const token = authState.token;
+      await axios.post('http://localhost:8080/api/logout', {token}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      localStorage.removeItem('token');
+      setAuthState({
+        token: null,
+        isAuthenticated: false,
+      });
+      message.success('Logout realizado com sucesso!');
+      navigate('/auth');
+    } catch (error) {
+      console.error('Logout failed', error);
+      message.error('Erro na aplicação. Tente novamente.');
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ authState, login, signup }}>
+    <AuthContext.Provider value={{ authState, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

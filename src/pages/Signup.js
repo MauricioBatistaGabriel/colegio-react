@@ -14,7 +14,7 @@ const Signup = () => {
     setLoading(true);
     await signup(values.email, values.senha);
     setLoading(false);
-    navigate('/login'); // Redireciona para a página de login após o cadastro bem-sucedido
+    navigate('/auth');
   };
 
   return (
@@ -33,12 +33,12 @@ const Signup = () => {
           <Input.Password placeholder="Senha" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button type="primary" htmlType="submit" to="/" loading={loading}>
             Cadastrar
           </Button>
         </Form.Item>
         <Form.Item>
-          <Link to="/">
+          <Link to="/auth">
             <Button type="default">Voltar para Login</Button>
           </Link>
         </Form.Item>
