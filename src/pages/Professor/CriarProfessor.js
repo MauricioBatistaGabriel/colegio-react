@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Select, Tag, Checkbox, message } from 'antd';
 import { criarProfessor, listarMaterias } from '../../services/professorService';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
@@ -10,6 +11,7 @@ const CriarProfessor = () => {
   const [materias, setMaterias] = useState([]);
   const [selectedMaterias, setSelectedMaterias] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMaterias = async () => {
@@ -50,6 +52,7 @@ const CriarProfessor = () => {
       message.success('Professor criado com sucesso!');
       form.resetFields();
       setSelectedMaterias([]);
+      navigate('/professor/listar');
     } catch (error) {
       message.error('Falha ao criar o professor.');
       console.error('Erro ao criar o professor', error);
@@ -59,7 +62,7 @@ const CriarProfessor = () => {
 
   return (
     <Card title="Criar Professor" style={{ width: 600, margin: 'auto', marginTop: '100px' }}>
-      <Form form={form} name="criar-professor" onFinish={onFinish}>
+      <Form form={form} name="criar-professor" onFinish={onFinish} layout={'vertical'}>
         <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Por favor, insira o email!' }]}>
           <Input placeholder="Email" />
         </Form.Item>

@@ -1,7 +1,8 @@
 // src/pages/Professor/ListarProfessor.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Input, Select } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Input, Select, Breadcrumb } from 'antd';
 import { listarProfessores, excluirProfessor, editarProfessor, listarMaterias } from '../../services/professorService';
+import { Link } from 'react-router-dom';
 
 const ListarProfessor = () => {
   const [professores, setProfessores] = useState([]);
@@ -141,6 +142,17 @@ const ListarProfessor = () => {
 
   return (
     <>
+        <h1>Professores</h1>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+      <Breadcrumb.Item>Professor</Breadcrumb.Item>
+      <Breadcrumb.Item>Listar</Breadcrumb.Item>
+      </Breadcrumb>
+            <Link to='/home'>
+            <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
+            </Link>
+      <Link to='/professor/criar'>
+      <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
+      </Link>
       <Table
         columns={columns}
         dataSource={professores}

@@ -1,6 +1,5 @@
 // src/services/professorService.js
 import axios from 'axios';
-import { message } from 'antd'; // Importando o message
 
 const API_URL = 'http://localhost:8080/api/professor';
 
@@ -73,6 +72,20 @@ export const listarMaterias = async () => {
     return handleError(error); // Retorna o erro para a chamada
   }
 };
+
+export const listarProfessoresByFilter = async (filterProfessor) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(API_URL + "/listarProfessorByMateriaAndHoraAulaAndData", filterProfessor, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error){
+    return handleError(error);
+  }
+}
 
 const handleError = (error) => {
   if (error.response && error.response.data && error.response.data.message) {

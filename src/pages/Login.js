@@ -13,12 +13,13 @@ const Login = () => {
   const onFinish = async (values) => {
     setLoading(true);
     await login(values.email, values.senha);
+    navigate('/home');
     setLoading(false);
   };
 
   useEffect(() => {
     if (authState.isAuthenticated) {
-      navigate('/aluno'); // Redireciona para a página inicial após o login bem-sucedido
+      navigate('/home'); // Redireciona para a página inicial após o login bem-sucedido
     }
   }, [authState.isAuthenticated, navigate]);
 
