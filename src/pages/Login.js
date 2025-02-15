@@ -1,6 +1,5 @@
-// src/pages/Login.js
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Importando Link
+import { useNavigate, Link } from 'react-router-dom';
 import { Form, Input, Button, Card } from 'antd';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -19,7 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     if (authState.isAuthenticated) {
-      navigate('/home'); // Redireciona para a página inicial após o login bem-sucedido
+      navigate('/home');
     }
   }, [authState.isAuthenticated, navigate]);
 

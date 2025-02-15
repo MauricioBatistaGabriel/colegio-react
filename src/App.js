@@ -7,25 +7,18 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import AlunoHome from './pages/Aluno/Home';
 import CriarAluno from './pages/Aluno/CriarAluno';
 import ListarAlunos from './pages/Aluno/ListarAlunos';
-import AulaHome from './pages/Aula/Home';
 import CriarAula from './pages/Aula/CriarAula';
 import ListarAulas from './pages/Aula/ListarAulas';
-import ProfessorHome from './pages/Professor/Home';
 import CriarProfessor from './pages/Professor/CriarProfessor';
 import ListarProfessores from './pages/Professor/ListarProfessores';
-import SalaHome from './pages/Sala/Home';
 import CriarSala from './pages/Sala/CriarSala';
 import ListarSalas from './pages/Sala/ListarSalas';
-import TurmaHome from './pages/Turma/Home';
 import CriarTurma from './pages/Turma/CriarTurma';
 import ListarTurmas from './pages/Turma/ListarTurmas';
-import MateriaHome from './pages/Materia/Home';
 import CriarMateria from './pages/Materia/CriarMateria';
 import ListarMaterias from './pages/Materia/ListarMaterias';
-import HoraAulaHome from './pages/HoraAula/Home';
 import CriarHoraAula from './pages/HoraAula/CriarHoraAula';
 import ListarHorasAula from './pages/HoraAula/ListarHorasAula';
 import './App.css';
@@ -90,25 +83,18 @@ const App = () => {
             <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
             <Route path="/auth" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/aluno" element={<PrivateRoute><AlunoHome /></PrivateRoute>} />
             <Route path="/aluno/criar" element={<PrivateRoute><CriarAluno /></PrivateRoute>} />
             <Route path="/aluno/listar" element={<PrivateRoute><ListarAlunos /></PrivateRoute>} />
-            <Route path="/professor" element={<PrivateRoute><ProfessorHome /></PrivateRoute>} />
             <Route path="/professor/criar" element={<PrivateRoute><CriarProfessor /></PrivateRoute>} />
             <Route path="/professor/listar" element={<PrivateRoute><ListarProfessores /></PrivateRoute>} />
-            <Route path="/materia" element={<PrivateRoute><MateriaHome /></PrivateRoute>} />
             <Route path="/materia/criar" element={<PrivateRoute><CriarMateria /></PrivateRoute>} />
             <Route path="/materia/listar" element={<PrivateRoute><ListarMaterias /></PrivateRoute>} />
-            <Route path="/aula" element={<PrivateRoute><AulaHome /></PrivateRoute>} />
             <Route path="/aula/criar" element={<PrivateRoute><CriarAula /></PrivateRoute>} />
             <Route path="/aula/listar" element={<PrivateRoute><ListarAulas /></PrivateRoute>} />
-            <Route path="/sala" element={<PrivateRoute><SalaHome /></PrivateRoute>} />
             <Route path="/sala/criar" element={<PrivateRoute><CriarSala /></PrivateRoute>} />
             <Route path="/sala/listar" element={<PrivateRoute><ListarSalas /></PrivateRoute>} />
-            <Route path="/turma" element={<PrivateRoute><TurmaHome /></PrivateRoute>} />
             <Route path="/turma/criar" element={<PrivateRoute><CriarTurma /></PrivateRoute>} />
             <Route path="/turma/listar" element={<PrivateRoute><ListarTurmas /></PrivateRoute>} />
-            <Route path="/hora-aula" element={<PrivateRoute><HoraAulaHome /></PrivateRoute>} />
             <Route path="/hora-aula/criar" element={<PrivateRoute><CriarHoraAula /></PrivateRoute>} />
             <Route path="/hora-aula/listar" element={<PrivateRoute><ListarHorasAula /></PrivateRoute>} />
             <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />

@@ -1,9 +1,10 @@
-// src/pages/HoraAula/ListarHorasAula.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Input, TimePicker, Select, Breadcrumb } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Input, TimePicker, Select, Breadcrumb, Card } from 'antd';
 import moment from 'moment';
 import { listarHorasAula, excluirHoraAula, editarHoraAula } from '../../services/HoraAulaService';
 import { Link } from 'react-router-dom';
+import { LeftOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+
 
 const { Option } = Select;
 
@@ -33,7 +34,7 @@ const ListarHorasAula = () => {
     try {
       const result = await excluirHoraAula(id);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setHorasAula(horasAula.filter(horaAula => horaAula.id !== id));
         message.success('Hora Aula excluída com sucesso!');
@@ -69,9 +70,9 @@ const ListarHorasAula = () => {
       };
       const result = await editarHoraAula(selectedHoraAula.id, payload);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
-        const updatedHorasAula = await listarHorasAula(); // Atualiza a lista de horas aula após a edição
+        const updatedHorasAula = await listarHorasAula();
         setHorasAula(updatedHorasAula);
         message.success('Hora Aula atualizada com sucesso!');
         handleCancel();
@@ -83,9 +84,11 @@ const ListarHorasAula = () => {
 
   const columns = [
     {
-      title: '#',
+      title: 'Cod',
       dataIndex: 'id',
       key: 'id',
+      width: '10%',
+      align: 'center',
     },
     {
       title: 'Hora Inicial',
@@ -105,16 +108,18 @@ const ListarHorasAula = () => {
     {
       title: 'Ações',
       key: 'acoes',
+      width: '20%',
+      align: 'center',
       render: (text, record) => (
         <span>
-          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <EditOutlined style={{ color: 'blue', marginRight: '10px', fontSize: '17px' }} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm
             title="Tem certeza que deseja excluir esta Hora Aula?"
             onConfirm={() => handleDelete(record.id)}
             okText="Sim"
             cancelText="Não"
           >
-            <Button type="link" danger>Excluir</Button>
+            <DeleteOutlined style={{ color: 'red', fontSize: '17px' }} />
           </Popconfirm>
         </span>
       ),
@@ -123,24 +128,31 @@ const ListarHorasAula = () => {
 
   return (
     <>
-        <h1>Horas Aula</h1>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Horas Aula</Breadcrumb.Item>
-          <Breadcrumb.Item>Listar</Breadcrumb.Item>
-          </Breadcrumb>
-                <Link to='/home'>
-                <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
-                </Link>
-          <Link to='/hora-aula/criar'>
-          <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
-          </Link>
-      <Table
-        columns={columns}
-        dataSource={horasAula}
-        loading={loading}
-        rowKey={record => record.id}
-        pagination={{ pageSize: 5 }}
-      />
+      <h1>Horas Aula</h1>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb.Item>Horas Aula</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
+      </Breadcrumb>
+      <Link to='/home'>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>
+      </Link>
+      <Link to='/hora-aula/criar'>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir
+        </Button>
+      </Link>
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={horasAula}
+          loading={loading}
+          rowKey={record => record.id}
+          pagination={{ pageSize: 5 }}
+        />
+      </Card>
       <Modal
         title="Editar Hora Aula"
         open={isModalVisible}
@@ -165,12 +177,12 @@ const ListarHorasAula = () => {
             <TimePicker format="HH:mm" placeholder="Hora Final" />
           </Form.Item>
           <Form.Item name="periodo" label="Período" rules={[{ required: true, message: 'Por favor, selecione um período!' }]}>
-          <Select placeholder="Selecione o período" style={{ width: '100%' }}>
-            <Option value="matutino">Matutino</Option>
-            <Option value="vespertino">Vespertino</Option>
-            <Option value="noturno">Noturno</Option>
-          </Select>
-        </Form.Item>
+            <Select placeholder="Selecione o período" style={{ width: '100%' }}>
+              <Option value="matutino">Matutino</Option>
+              <Option value="vespertino">Vespertino</Option>
+              <Option value="noturno">Noturno</Option>
+            </Select>
+          </Form.Item>
         </Form>
       </Modal>
     </>

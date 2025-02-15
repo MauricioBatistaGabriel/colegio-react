@@ -1,8 +1,8 @@
-// src/pages/Turma/ListarTurmas.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Input, Select, Breadcrumb } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Input, Select, Breadcrumb, Card } from 'antd';
 import { listarTurmas, excluirTurma, editarTurma, listarSalas, listarMaterias } from '../../services/turmaService';
 import { Link } from 'react-router-dom';
+import { LeftOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -40,7 +40,7 @@ const ListarTurmas = () => {
     try {
       const result = await excluirTurma(id);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setTurmas(turmas.filter(turma => turma.id !== id));
         message.success('Turma excluída com sucesso!');
@@ -54,7 +54,7 @@ const ListarTurmas = () => {
     setSelectedTurma(record);
     form.setFieldsValue({
       nome: record.nome,
-      sala: record.sala.id, // Usando o ID da sala
+      sala: record.sala.id,
       periodo: record.periodo,
       materias: record.materias.map(materia => materia.id),
     });
@@ -78,9 +78,9 @@ const ListarTurmas = () => {
       };
       const result = await editarTurma(selectedTurma.id, payload);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
-        const updatedTurmas = await listarTurmas(); // Atualiza a lista de turmas após a edição
+        const updatedTurmas = await listarTurmas();
         setTurmas(updatedTurmas);
         message.success('Turma atualizada com sucesso!');
         handleCancel();
@@ -92,9 +92,11 @@ const ListarTurmas = () => {
 
   const columns = [
     {
-      title: '#',
+      title: 'Cod',
       dataIndex: 'id',
       key: 'id',
+      width: '10%',
+      align: 'center',
     },
     {
       title: 'Nome',
@@ -110,7 +112,7 @@ const ListarTurmas = () => {
       title: 'Sala',
       dataIndex: 'sala',
       key: 'sala',
-      render: (sala) => sala.sala, // Exibindo o nome da sala
+      render: (sala) => sala.sala,
     },
     {
       title: 'Matérias',
@@ -121,16 +123,18 @@ const ListarTurmas = () => {
     {
       title: 'Ações',
       key: 'acoes',
+      width: '20%',
+      align: 'center',
       render: (text, record) => (
         <span>
-          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <EditOutlined style={{ color: 'blue', marginRight: '10px', fontSize: '17px' }} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm
             title="Tem certeza que deseja excluir esta turma?"
             onConfirm={() => handleDelete(record.id)}
             okText="Sim"
             cancelText="Não"
           >
-            <Button type="link" danger>Excluir</Button>
+            <DeleteOutlined style={{ color: 'red', fontSize: '17px' }} />
           </Popconfirm>
         </span>
       ),
@@ -139,24 +143,31 @@ const ListarTurmas = () => {
 
   return (
     <>
-    <h1>Turmas</h1>
+      <h1>Turmas</h1>
       <Breadcrumb style={{ margin: '16px 0' }}>
-      <Breadcrumb.Item>Turma</Breadcrumb.Item>
-      <Breadcrumb.Item>Listar</Breadcrumb.Item>
+        <Breadcrumb.Item>Turma</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
       </Breadcrumb>
       <Link to='/home'>
-      <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>
       </Link>
       <Link to='/turma/criar'>
-      <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir
+        </Button>
       </Link>
-      <Table
-        columns={columns}
-        dataSource={turmas}
-        loading={loading}
-        rowKey={record => record.id}
-        pagination={{ pageSize: 5 }}
-      />
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={turmas}
+          loading={loading}
+          rowKey={record => record.id}
+          pagination={{ pageSize: 5 }}
+        />
+      </Card>
       <Modal
         title="Editar Turma"
         open={isModalVisible}

@@ -1,4 +1,3 @@
-// src/services/horaAulaService.js
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/horaaula';
@@ -13,7 +12,7 @@ export const listarHorasAula = async () => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -41,7 +40,7 @@ export const criarHoraAula = async (horaAula) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -55,7 +54,7 @@ export const editarHoraAula = async (id, horaAula) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -69,15 +68,15 @@ export const excluirHoraAula = async (id) => {
       },
     });
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
 const handleError = (error) => {
   if (error.response && error.response.data && error.response.data.message) {
-    return { error: error.response.data.message }; // Retorna a mensagem de erro do servidor
+    return { error: error.response.data.message };
   } else {
-    return { error: 'Erro na aplicação' }; // Retorna erro genérico da aplicação
+    return { error: 'Erro na aplicação' };
   }
 };
 

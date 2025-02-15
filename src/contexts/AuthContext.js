@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Checar se há um token no localStorage quando o componente for montado
     const token = localStorage.getItem('token');
     if (token) {
       setAuthState({
@@ -31,7 +30,7 @@ const AuthProvider = ({ children }) => {
         token,
         isAuthenticated: true,
       });
-      localStorage.setItem('token', token); // Salva o token no localStorage
+      localStorage.setItem('token', token);
       message.success('Login realizado com sucesso!');
     } catch (error) {
       console.error('Login failed', error);

@@ -20,11 +20,11 @@ export const criarAula = async (aula) => {
   try {
     const token = localStorage.getItem('token');
     const payload = {
-      data: aula.data, // String no formato "YYYY-MM-DD"
-      professor: aula.professor, // ID do professor
-      materia: aula.materia, // ID da matéria
-      turma: aula.turma, // ID da turma
-      horaaula: aula.horaaula, // ID da hora aula
+      data: aula.data,
+      professor: aula.professor,
+      materia: aula.materia,
+      turma: aula.turma,
+      horaaula: aula.horaaula,
     };
     const response = await axios.post(API_URL, payload, {
       headers: {
@@ -41,11 +41,11 @@ export const editarAula = async (id, aula) => {
   try {
     const token = localStorage.getItem('token');
     const payload = {
-      data: aula.data, // String no formato "YYYY-MM-DD"
-      professor: aula.professor, // ID do professor
-      materia: aula.materia, // ID da matéria
-      turma: aula.turma, // ID da turma
-      horaaula: aula.horaaula, // ID da hora aula
+      data: aula.data,
+      professor: aula.professor,
+      materia: aula.materia,
+      turma: aula.turma,
+      horaaula: aula.horaaula,
     };
     const response = await axios.put(`${API_URL}/${id}`, payload, {
       headers: {

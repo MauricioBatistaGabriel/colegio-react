@@ -1,6 +1,6 @@
 // src/pages/HoraAula/CriarHoraAula.js
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, TimePicker, Select, message } from 'antd';
+import { Form, Button, Card, TimePicker, Select, message } from 'antd';
 import { criarHoraAula } from '../../services/HoraAulaService';
 import { useNavigate } from 'react-router-dom';
 

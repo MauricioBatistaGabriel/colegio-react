@@ -1,9 +1,9 @@
-// src/pages/Aula/ListarAulas.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Select, DatePicker, Breadcrumb } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Select, DatePicker, Breadcrumb, Card } from 'antd';
 import { listarAulas, excluirAula, editarAula, listarTurmas, listarProfessores, listarMaterias, listarHorasAula } from '../../services/aulaService';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { LeftOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const ListarAulas = () => {
   const [aulas, setAulas] = useState([]);
@@ -89,15 +89,15 @@ const ListarAulas = () => {
         message.error(result.error);
       } else {
         const updatedAulas = aulas.map(aula => (
-          aula.id === selectedAula.id ? 
-          { 
-            ...aula, 
-            ...values, 
-            turma: turmas.find(t => t.id === values.turma),
-            materia: materias.find(m => m.id === values.materia),
-            professor: professores.find(p => p.id === values.professor),
-            horaaula: horasAula.find(h => h.id === values.horaaula)
-          } : aula
+          aula.id === selectedAula.id ?
+            {
+              ...aula,
+              ...values,
+              turma: turmas.find(t => t.id === values.turma),
+              materia: materias.find(m => m.id === values.materia),
+              professor: professores.find(p => p.id === values.professor),
+              horaaula: horasAula.find(h => h.id === values.horaaula)
+            } : aula
         ));
         setAulas(updatedAulas);
         message.success('Aula atualizada com sucesso!');
@@ -110,9 +110,11 @@ const ListarAulas = () => {
 
   const columns = [
     {
-      title: '#',
+      title: 'Cod',
       dataIndex: 'id',
       key: 'id',
+      width: '10%',
+      align: 'center',
     },
     {
       title: 'Turma',
@@ -156,11 +158,13 @@ const ListarAulas = () => {
     {
       title: 'Ações',
       key: 'acoes',
+      width: '20%',
+      align: 'center',
       render: (text, record) => (
         <span>
-          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <EditOutlined style={{ color: 'blue', marginRight: '10px', fontSize: '17px' }} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm title="Tem certeza que deseja excluir esta aula?" onConfirm={() => handleDelete(record.id)} okText="Sim" cancelText="Não">
-            <Button type="link" danger>Excluir</Button>
+          <DeleteOutlined style={{ color: 'red', fontSize: '17px' }} />
           </Popconfirm>
         </span>
       ),
@@ -169,18 +173,31 @@ const ListarAulas = () => {
 
   return (
     <>
-        <h1>Aulas</h1>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Aula</Breadcrumb.Item>
-          <Breadcrumb.Item>Listar</Breadcrumb.Item>
-          </Breadcrumb>
-                <Link to='/home'>
-                <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
-                </Link>
-          <Link to='/aula/criar'>
-          <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
-          </Link>
-      <Table columns={columns} dataSource={aulas} loading={loading} rowKey={record => record.id} pagination={{ pageSize: 5 }} />
+      <h1>Aulas</h1>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb.Item>Aula</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
+      </Breadcrumb>
+      <Link to='/home'>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>
+      </Link>
+      <Link to='/aula/criar'>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir
+        </Button>
+      </Link>
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={aulas}
+          loading={loading}
+          rowKey={record => record.id}
+          pagination={{ pageSize: 5 }}
+        />
+      </Card>
       <Modal title="Editar Aula" open={isModalVisible} onCancel={handleCancel} onOk={handleSave} okText="Salvar" cancelText="Cancelar">
         <Form form={form} layout="vertical">
           <Form.Item name="turma" label="Turma" rules={[{ required: true, message: 'Por favor, selecione a turma!' }]}>
