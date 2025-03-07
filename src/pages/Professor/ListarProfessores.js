@@ -1,8 +1,8 @@
-// src/pages/Professor/ListarProfessor.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Input, Select, Breadcrumb } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Input, Select, Breadcrumb, Card } from 'antd';
 import { listarProfessores, excluirProfessor, editarProfessor, listarMaterias } from '../../services/professorService';
 import { Link } from 'react-router-dom';
+import { LeftOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const ListarProfessor = () => {
   const [professores, setProfessores] = useState([]);
@@ -16,9 +16,9 @@ const ListarProfessor = () => {
     const fetchProfessores = async () => {
       setLoading(true);
       const result = await listarProfessores();
-      console.log("Professores carregados:", result); // Log dos dados dos professores
+      console.log("Professores carregados:", result);
       if (result.error) {
-        message.warning(result.error); // Exibe a mensagem de erro do servidor em amarelo
+        message.warning(result.error);
       } else {
         setProfessores(result);
       }
@@ -28,7 +28,7 @@ const ListarProfessor = () => {
     const fetchMaterias = async () => {
       const result = await listarMaterias();
       if (result.error) {
-        message.warning(result.error); // Exibe a mensagem de erro do servidor em amarelo
+        message.warning(result.error);
       } else {
         setMaterias(result);
       }
@@ -42,7 +42,7 @@ const ListarProfessor = () => {
     try {
       const result = await excluirProfessor(id);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setProfessores(professores.filter(professor => professor.id !== id));
         message.success('Professor excluído com sucesso!');
@@ -54,11 +54,11 @@ const ListarProfessor = () => {
 
   const handleEdit = (record) => {
     setSelectedProfessor(record);
-    form.setFieldsValue({ 
-      nome: record.nome, 
-      cpf: record.cpf, 
+    form.setFieldsValue({
+      nome: record.nome,
+      cpf: record.cpf,
       periodosDeTrabalho: record.periodosDeTrabalho,
-      materias: record.materias.map(materia => materia.id) // Seleciona as matérias pelo ID
+      materias: record.materias.map(materia => materia.id)
     });
     setIsModalVisible(true);
   };
@@ -74,14 +74,14 @@ const ListarProfessor = () => {
       const values = await form.validateFields();
       const materiasValidas = values.materias.filter(materiaId => materiaId !== undefined && materiaId !== null); // Filtra IDs de matéria vazios
       const payload = {
-        nome: values.nome, 
-        cpf: values.cpf, 
+        nome: values.nome,
+        cpf: values.cpf,
         periodosDeTrabalho: values.periodosDeTrabalho,
-        materias: materiasValidas // Envia apenas os IDs das matérias
+        materias: materiasValidas
       };
       const result = await editarProfessor(selectedProfessor.id, payload);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setProfessores(professores.map(professor => (professor.id === selectedProfessor.id ? { ...professor, ...values, materias: result.materias } : professor)));
         message.success('Professor atualizado com sucesso!');
@@ -91,13 +91,15 @@ const ListarProfessor = () => {
       message.error('Falha ao atualizar o professor.');
     }
   };
-  
+
 
   const columns = [
     {
-      title: '#',
+      title: 'Cod',
       dataIndex: 'id',
       key: 'id',
+      width: '10%',
+      align: 'center',
     },
     {
       title: 'Nome',
@@ -124,16 +126,18 @@ const ListarProfessor = () => {
     {
       title: 'Ações',
       key: 'acoes',
+      width: '20%',
+      align: 'center',
       render: (text, record) => (
         <span>
-          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <EditOutlined style={{ color: 'blue', marginRight: '10px', fontSize: '17px' }} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm
             title="Tem certeza que deseja excluir este professor?"
             onConfirm={() => handleDelete(record.id)}
             okText="Sim"
             cancelText="Não"
           >
-            <Button type="link" danger>Excluir</Button>
+            <DeleteOutlined style={{ color: 'red', fontSize: '17px' }} />
           </Popconfirm>
         </span>
       ),
@@ -142,24 +146,31 @@ const ListarProfessor = () => {
 
   return (
     <>
-        <h1>Professores</h1>
+      <h1>Professores</h1>
       <Breadcrumb style={{ margin: '16px 0' }}>
-      <Breadcrumb.Item>Professor</Breadcrumb.Item>
-      <Breadcrumb.Item>Listar</Breadcrumb.Item>
+        <Breadcrumb.Item>Professor</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
       </Breadcrumb>
-            <Link to='/home'>
-            <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
-            </Link>
-      <Link to='/professor/criar'>
-      <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
+      <Link to='/home'>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>
       </Link>
-      <Table
-        columns={columns}
-        dataSource={professores}
-        loading={loading}
-        rowKey={record => record.id}
-        pagination={{ pageSize: 5 }}
-      />
+      <Link to='/professor/criar'>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir
+        </Button>
+      </Link>
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={professores}
+          loading={loading}
+          rowKey={record => record.id}
+          pagination={{ pageSize: 5 }}
+        />
+      </Card>
       <Modal
         title="Editar Professor"
         open={isModalVisible}

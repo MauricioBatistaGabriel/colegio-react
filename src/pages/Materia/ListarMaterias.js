@@ -1,9 +1,8 @@
-// src/pages/Materia/ListarMaterias.js
 import React, { useState, useEffect } from 'react';
 import { Table, Button, message, Popconfirm, Modal, Form, Input, Breadcrumb, Card } from 'antd';
 import { listarMaterias, excluirMateria, AtualizarMateria } from '../../services/materiaServices';
 import { Link } from 'react-router-dom';
-import { LeftOutlined , DeleteOutlined, EditOutlined, PlusCircleOutlined} from '@ant-design/icons';
+import { LeftOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const ListarMaterias = () => {
   const [materias, setMaterias] = useState([]);
@@ -17,7 +16,7 @@ const ListarMaterias = () => {
       setLoading(true);
       const result = await listarMaterias();
       if (result.error) {
-        message.warning(result.error); // Exibe a mensagem de erro do servidor em amarelo
+        message.warning(result.error);
       } else {
         setMaterias(result);
       }
@@ -31,7 +30,7 @@ const ListarMaterias = () => {
     try {
       const result = await excluirMateria(id);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setMaterias(materias.filter(materia => materia.id !== id));
         message.success('Matéria excluída com sucesso!');
@@ -58,7 +57,7 @@ const ListarMaterias = () => {
       const values = await form.validateFields();
       const result = await AtualizarMateria(selectedMateria.id, { nome: values.nome });
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setMaterias(materias.map(materia => (materia.id === selectedMateria.id ? { ...materia, nome: values.nome } : materia)));
         message.success('Matéria atualizada com sucesso!');
@@ -89,14 +88,14 @@ const ListarMaterias = () => {
       align: 'center',
       render: (text, record) => (
         <span>
-          <EditOutlined style={{color:'blue', marginRight:'10px', fontSize:'17px'}} type="link" onClick={() => handleEdit(record)}></EditOutlined>
+          <EditOutlined style={{ color: 'blue', marginRight: '10px', fontSize: '17px' }} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm
             title="Tem certeza que deseja excluir esta matéria?"
             onConfirm={() => handleDelete(record.id)}
             okText="Sim"
             cancelText="Não"
           >
-            <DeleteOutlined style={{color:'red', fontSize:'17px'}} />
+            <DeleteOutlined style={{ color: 'red', fontSize: '17px' }} />
           </Popconfirm>
         </span>
       ),
@@ -105,31 +104,32 @@ const ListarMaterias = () => {
 
   return (
     <>
-        <h1>Matérias</h1>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Materia</Breadcrumb.Item>
-          <Breadcrumb.Item>Listar</Breadcrumb.Item>
-          </Breadcrumb>
-                <Link to='/home'>
-                <Button style={{marginBottom:'10px', marginRight:'10px'}}>
-                <LeftOutlined />
-                Voltar
-                </Button>
-                </Link>
-          <Link to='/materia/criar'>
-          <Button style={{ marginBottom:'10px'}}>
-          <PlusCircleOutlined style={{color:'green'}} />Incluir</Button>
-          </Link>
-        <Card style={{margin:'auto', width:'auto'}}>    
-      <Table
-        columns={columns}
-        dataSource={materias}
-        loading={loading}
-        rowKey="id"
-        pagination={{ pageSize: 10 }}
-        tableLayout='auto'
-      />
-      </Card> 
+      <h1>Matérias</h1>
+      <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb.Item>Materia</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
+      </Breadcrumb>
+      <Link to='/home'>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>
+      </Link>
+      <Link to='/materia/criar'>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir
+        </Button>
+      </Link>
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={materias}
+          loading={loading}
+          rowKey="id"
+          pagination={{ pageSize: 10 }}
+          tableLayout='auto'
+        />
+      </Card>
       <Modal
         title="Manutenção Matéria"
         open={isModalVisible}

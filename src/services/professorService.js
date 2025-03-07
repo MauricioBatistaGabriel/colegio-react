@@ -1,4 +1,3 @@
-// src/services/professorService.js
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/professor';
@@ -13,7 +12,7 @@ export const criarProfessor = async (professor) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -27,7 +26,7 @@ export const editarProfessor = async (id, professor) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -41,7 +40,7 @@ export const excluirProfessor = async (id) => {
       },
     });
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -55,7 +54,7 @@ export const listarProfessores = async () => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -69,7 +68,7 @@ export const listarMaterias = async () => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -89,9 +88,9 @@ export const listarProfessoresByFilter = async (filterProfessor) => {
 
 const handleError = (error) => {
   if (error.response && error.response.data && error.response.data.message) {
-    return { error: error.response.data.message }; // Retorna a mensagem de erro do servidor
+    return { error: error.response.data.message };
   } else {
-    return { error: 'Erro na aplicação' }; // Retorna erro genérico da aplicação
+    return { error: 'Erro na aplicação' };
   }
 };
 

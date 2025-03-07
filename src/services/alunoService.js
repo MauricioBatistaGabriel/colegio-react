@@ -1,4 +1,3 @@
-// src/services/alunoService.js
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/aluno';
@@ -13,7 +12,7 @@ export const criarAluno = async (aluno) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -27,7 +26,7 @@ export const editarAluno = async (id, aluno) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -41,7 +40,7 @@ export const excluirAluno = async (id) => {
       },
     });
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -55,7 +54,7 @@ export const listarAlunos = async () => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -75,9 +74,9 @@ export const listarAlunoSemTurma = async () => {
 
 const handleError = (error) => {
   if (error.response && error.response.data && error.response.data.message) {
-    return { error: error.response.data.message }; // Retorna a mensagem de erro do servidor
+    return { error: error.response.data.message };
   } else {
-    return { error: 'Erro na aplicação' }; // Retorna erro genérico da aplicação
+    return { error: 'Erro na aplicação' };
   }
 };
 

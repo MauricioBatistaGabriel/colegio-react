@@ -1,8 +1,8 @@
-// src/pages/Sala/ListarSalas.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Input, Breadcrumb } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Input, Breadcrumb, Card } from 'antd';
 import { listarSalas, excluirSala, editarSala } from '../../services/salaService';
 import { Link } from 'react-router-dom';
+import { LeftOutlined, DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const ListarSalas = () => {
   const [salas, setSalas] = useState([]);
@@ -16,7 +16,7 @@ const ListarSalas = () => {
       setLoading(true);
       const result = await listarSalas();
       if (result.error) {
-        message.warning(result.error); // Exibe a mensagem de erro do servidor em amarelo
+        message.warning(result.error);
       } else {
         setSalas(result);
       }
@@ -30,7 +30,7 @@ const ListarSalas = () => {
     try {
       const result = await excluirSala(id);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setSalas(salas.filter(sala => sala.id !== id));
         message.success('Sala excluída com sucesso!');
@@ -42,8 +42,8 @@ const ListarSalas = () => {
 
   const handleEdit = (record) => {
     setSelectedSala(record);
-    form.setFieldsValue({ 
-      nome: record.sala 
+    form.setFieldsValue({
+      nome: record.sala
     });
     setIsModalVisible(true);
   };
@@ -62,7 +62,7 @@ const ListarSalas = () => {
       };
       const result = await editarSala(selectedSala.id, payload);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setSalas(salas.map(sala => (sala.id === selectedSala.id ? { ...sala, ...values } : sala)));
         message.success('Sala atualizada com sucesso!');
@@ -75,9 +75,11 @@ const ListarSalas = () => {
 
   const columns = [
     {
-      title: '#',
+      title: 'Cod',
       dataIndex: 'id',
       key: 'id',
+      width: '10%',
+      align: 'center',
     },
     {
       title: 'Sala',
@@ -88,21 +90,24 @@ const ListarSalas = () => {
       title: 'Períodos Disponíveis',
       dataIndex: 'periodosDisponiveis',
       key: 'periodosDisponiveis',
+      width: '23%',
       render: (periodos) => (Array.isArray(periodos) ? periodos.join(', ') : ''),
     },
     {
       title: 'Ações',
       key: 'acoes',
+      width: '20%',
+      align: 'center',
       render: (text, record) => (
         <span>
-          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <EditOutlined style={{ color: 'blue', marginRight: '10px', fontSize: '17px' }} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm
             title="Tem certeza que deseja excluir esta sala?"
             onConfirm={() => handleDelete(record.id)}
             okText="Sim"
             cancelText="Não"
           >
-            <Button type="link" danger>Excluir</Button>
+            <DeleteOutlined style={{ color: 'red', fontSize: '17px' }} />
           </Popconfirm>
         </span>
       ),
@@ -111,24 +116,31 @@ const ListarSalas = () => {
 
   return (
     <>
-        <h1>Salas</h1>
+      <h1>Salas</h1>
       <Breadcrumb style={{ margin: '16px 0' }}>
-      <Breadcrumb.Item>Sala</Breadcrumb.Item>
-      <Breadcrumb.Item>Listar</Breadcrumb.Item>
+        <Breadcrumb.Item>Sala</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
       </Breadcrumb>
-            <Link to='/home'>
-            <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
-            </Link>
-      <Link to='/sala/criar'>
-      <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
+      <Link to='/home'>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>
       </Link>
-      <Table
-        columns={columns}
-        dataSource={salas}
-        loading={loading}
-        rowKey={record => record.id}
-        pagination={{ pageSize: 5 }}
-      />
+      <Link to='/sala/criar'>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir
+        </Button>
+      </Link>
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={salas}
+          loading={loading}
+          rowKey={record => record.id}
+          pagination={{ pageSize: 5 }}
+        />
+      </Card>
       <Modal
         title="Editar Sala"
         open={isModalVisible}

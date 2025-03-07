@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Card, Select, DatePicker, message } from 'antd';
 import { listarMateriaByTurma } from '../../services/materiaServices';
 import { listarProfessoresByFilter } from '../../services/professorService';
-import { criarAula, listarTurmas, listarHorasAula } from '../../services/aulaService';
+import { criarAula, listarTurmas } from '../../services/aulaService';
 import { listarHorasAulaByTurma } from '../../services/HoraAulaService';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';

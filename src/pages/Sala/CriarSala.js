@@ -1,4 +1,3 @@
-// src/pages/Sala/CriarSala.js
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, message } from 'antd';
 import { criarSala } from '../../services/salaService';

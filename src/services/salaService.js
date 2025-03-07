@@ -1,6 +1,4 @@
-// src/services/salaService.js
 import axios from 'axios';
-import { message } from 'antd'; // Importando o message
 
 const API_URL = 'http://localhost:8080/api/sala';
 
@@ -14,7 +12,7 @@ export const criarSala = async (sala) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -28,7 +26,7 @@ export const editarSala = async (id, sala) => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -42,7 +40,7 @@ export const excluirSala = async (id) => {
       },
     });
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -56,7 +54,7 @@ export const listarSalas = async () => {
     });
     return response.data;
   } catch (error) {
-    return handleError(error); // Retorna o erro para a chamada
+    return handleError(error);
   }
 };
 
@@ -76,9 +74,9 @@ export const listarSalasPorPeriodo = async (periodo) => {
 
 const handleError = (error) => {
   if (error.response && error.response.data && error.response.data.message) {
-    return { error: error.response.data.message }; // Retorna a mensagem de erro do servidor
+    return { error: error.response.data.message };
   } else {
-    return { error: 'Erro na aplicação' }; // Retorna erro genérico da aplicação
+    return { error: 'Erro na aplicação' };
   }
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import AulasAgendadas from '../components/aulasAgendadas'; // Certifique-se de que o caminho está correto
+import AulasAgendadas from '../components/aulasAgendadas';
 
 const Home = () => {
   return (

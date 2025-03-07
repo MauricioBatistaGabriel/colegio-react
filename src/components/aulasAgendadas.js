@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Carousel, message } from 'antd';
 import { listarAulas } from '../services/aulaService';
-import './AulasAgendadas.css';
-
 const { Meta } = Card;
 
 const AulasAgendadas = () => {
@@ -21,6 +19,7 @@ const AulasAgendadas = () => {
   }, []);
 
   const settings = {
+    draggable: true,
     dots: true,
     infinite: true,
     speed: 500,
@@ -32,6 +31,7 @@ const AulasAgendadas = () => {
     <Carousel {...settings}>
       {aulas.map(aula => (
         <Card
+          className='card-aulas'
           key={aula.id}
           title={`Aula ${aula.id}`}
           hoverable

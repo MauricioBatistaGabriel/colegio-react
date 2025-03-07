@@ -1,7 +1,7 @@
-// src/pages/Aluno/ListarAluno.js
 import React, { useState, useEffect } from 'react';
-import { Table, Button, message, Popconfirm, Modal, Form, Input, Breadcrumb } from 'antd';
+import { Table, Button, message, Popconfirm, Modal, Form, Input, Breadcrumb, Card } from 'antd';
 import { listarAlunos, excluirAluno, editarAluno } from '../../services/alunoService';
+import { LeftOutlined , DeleteOutlined, EditOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const ListarAluno = () => {
@@ -15,9 +15,9 @@ const ListarAluno = () => {
     const fetchAlunos = async () => {
       setLoading(true);
       const result = await listarAlunos();
-      console.log("Alunos carregados:", result); // Log dos dados dos alunos
+      console.log("Alunos carregados:", result);
       if (result.error) {
-        message.warning(result.error); // Exibe a mensagem de erro do servidor em amarelo
+        message.warning(result.error);
       } else {
         setAlunos(result);
       }
@@ -31,7 +31,7 @@ const ListarAluno = () => {
     try {
       const result = await excluirAluno(id);
       if (result && result.error) {
-        message.error(result.error); // Exibe mensagem de erro em vermelho
+        message.error(result.error);
       } else {
         setAlunos(alunos.filter(aluno => aluno.id !== id));
         message.success('Aluno excluído com sucesso!');
@@ -80,9 +80,11 @@ const ListarAluno = () => {
 
   const columns = [
     {
-      title: '#',
+      title: 'Cod',
       dataIndex: 'id',
       key: 'id',
+      width: '10%',
+      align: 'center',
     },
     {
       title: 'Nome',
@@ -107,16 +109,18 @@ const ListarAluno = () => {
     {
       title: 'Ações',
       key: 'acoes',
+      width: '20%',
+      align: 'center',
       render: (text, record) => (
         <span>
-          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <EditOutlined style={{color:'blue', marginRight:'10px', fontSize:'17px'}} type="link" onClick={() => handleEdit(record)}></EditOutlined>
           <Popconfirm
             title="Tem certeza que deseja excluir este aluno?"
             onConfirm={() => handleDelete(record.id)}
             okText="Sim"
             cancelText="Não"
           >
-            <Button type="link" danger>Excluir</Button>
+            <DeleteOutlined style={{color:'red', fontSize:'17px'}} />
           </Popconfirm>
         </span>
       ),
@@ -125,24 +129,30 @@ const ListarAluno = () => {
 
   return (
     <>
-        <h1>Alunos</h1>
+      <h1>Alunos</h1>
       <Breadcrumb style={{ margin: '16px 0' }}>
-      <Breadcrumb.Item>Aluno</Breadcrumb.Item>
-          <Breadcrumb.Item>Listar</Breadcrumb.Item>
-          </Breadcrumb>
-                <Link to='/home'>
-                <Button style={{marginBottom:'10px', marginRight:'10px'}}>Voltar Home</Button>
-                </Link>
-          <Link to='/aluno/criar'>
-          <Button style={{ backgroundColor: 'green', color: 'white', marginBottom:'10px'}}>Incluir</Button>
-          </Link>
-      <Table
-        columns={columns}
-        dataSource={alunos}
-        loading={loading}
-        rowKey={record => record.id}
-        pagination={{ pageSize: 5 }}
-      />
+        <Breadcrumb.Item>Aluno</Breadcrumb.Item>
+        <Breadcrumb.Item>Listar</Breadcrumb.Item>
+      </Breadcrumb>
+      <Link to='/home'>
+        <Button style={{ marginBottom: '10px', marginRight: '10px' }}>
+          <LeftOutlined />
+          Voltar
+        </Button>      
+      </Link>
+      <Link to='/aluno/criar'>
+        <Button style={{ marginBottom: '10px' }}>
+          <PlusCircleOutlined style={{ color: 'green' }} />Incluir</Button>
+      </Link>
+      <Card style={{ margin: 'auto', width: 'auto' }}>
+        <Table
+          columns={columns}
+          dataSource={alunos}
+          loading={loading}
+          rowKey={record => record.id}
+          pagination={{ pageSize: 5 }}
+        />
+      </Card>
       <Modal
         title="Editar Aluno"
         open={isModalVisible}

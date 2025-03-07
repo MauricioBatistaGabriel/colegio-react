@@ -1,4 +1,3 @@
-// src/pages/Professor/CriarProfessor.js
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Select, Tag, Checkbox, message } from 'antd';
 import { criarProfessor, listarMaterias } from '../../services/professorService';
@@ -45,8 +44,8 @@ const CriarProfessor = () => {
         senha: values.senha,
         nome: values.nome,
         cpf: values.cpf,
-        materias: selectedMaterias.map(materia => materia.id), // Enviar IDs das matérias
-        periodosDeTrabalho: values.periodos, // Usar "periodosDeTrabalho" no JSON
+        materias: selectedMaterias.map(materia => materia.id),
+        periodosDeTrabalho: values.periodos,
       };
       await criarProfessor(professor);
       message.success('Professor criado com sucesso!');

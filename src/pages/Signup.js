@@ -1,6 +1,5 @@
-// src/pages/Signup.js
 import React, { useContext, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Importando Link
+import { useNavigate, Link } from 'react-router-dom';
 import { Form, Input, Button, Card } from 'antd';
 import { AuthContext } from '../contexts/AuthContext';
 
