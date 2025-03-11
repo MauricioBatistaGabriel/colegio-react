@@ -13,11 +13,9 @@ code {
     monospace;
 }
 
-/* .ant-layout{
-  display: grid; 
-  grid-template-rows: auto 1fr auto; 
+.ant-layout{
   min-height: 100vh;
-} */
+}
 
 .ant-layout-footer{
   margin-bottom: 0px;
